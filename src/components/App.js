@@ -167,7 +167,9 @@ function App() {
     <CurrentUserContext.Provider value={currentUser}>
       <div className="page">
 
-        <Header />
+        <Header 
+        //email={} 
+        />
           <Switch>
 
               <Route exact path="/">
