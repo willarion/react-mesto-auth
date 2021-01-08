@@ -9,6 +9,7 @@ import EditAvatarPopup from './EditAvatarPopup';
 import AddPlacePopup from './AddPlacePopup';
 import ImagePopup from './ImagePopup';
 import Login from './Login';
+import Register from './Register';
 import api from '../utils/Api';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
@@ -181,7 +182,7 @@ function App() {
               <Footer />
             </Route>
             <Route exact path="/sign-up">
-            
+              <Register />
             </Route>  
             <Route exact path="/sign-in">
               <Login />
