@@ -1,7 +1,18 @@
-# Здесь будет ваш проект на Реакте с авторизацией и регистрацией
+### Learning project MESTO-REACT
+This project was ported to React from vanilla js project here https://github.com/willarion/mesto.git
 
-Используйте ваши предыдущие наработки по проекту Mesto. Это может быть работа 11-го спринта или его улучшенная версия после 2-х последних спринтов. 
+This project was bootstrapped with Create React App.
 
-Все запросы на авторизацию, регистрацию и проверку токена должны работать через сервис `https://auth.nomoreparties.co`. Остальные запросы, не относящиеся к этой проектной работе могут быть к бэкенду из предыдущих спринтов.
+## Available Scripts
+In the project directory, you can run:
 
-Успехов!
+# npm start
+Runs the app in the development mode.
+Open http://localhost:3000 to view it in the browser.
+
+The page will reload if you make edits.
+You will also see any lint errors in the console.
+
+# npm run build
+Builds the app for production to the build folder.
+It correctly bundles React in production mode and optimizes the build for the best performance.
