@@ -14,6 +14,9 @@
 @import url(./__caption/modal__caption.css);
 @import url(./__figure/modal__figure.css);
 @import url(./__error/modal__error.css);
+@import url(./__tooltip-image/modal__tooltip-image.css);
+@import url(./__tooltip-caption/modal__tooltip-caption.css);
+@import url(./__tooltip-container/modal__tooltip-container.css);
 @import url(./__error/_visible/modal__error_visible.css);
 
 .modal {
