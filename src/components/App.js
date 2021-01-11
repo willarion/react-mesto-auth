@@ -1,5 +1,5 @@
 import React from 'react'; 
-import { Route, Switch, Redirect } from 'react-router-dom';
+import { Route, Switch, useHistory } from 'react-router-dom';
 import Header from '../components/Header';
 import Main from '../components/Main';
 import Footer from '../components/Footer';
@@ -163,7 +163,65 @@ function App() {
 
   }
 
-  const loggedIn= false;
+  //кнопки Header
+
+  const [urlAdress, setUrlAdress] = React.useState('');
+  const [urlName, setUrlName] = React.useState('');
+  const [location, setLocation] = React.useState(window.location.pathname);
+
+  const history = useHistory(); 
+
+  React.useEffect(() => {
+    history.listen((location) => { 
+      setLocation(location.pathname);
+   }) 
+  }, [history]);
+
+
+  React.useEffect(() => {
+
+    if (location === '/sing-up') {
+      setUrlAdress('/sing-in');
+
+      return;
+    } 
+    if (location === '/sing-in') {
+      setUrlAdress('/sing-up');
+
+      return;
+    }
+    if (location === '/') {
+      setUrlAdress('/sing-in');
+
+      return;
+    }
+  }, [location, urlAdress, history]);
+
+  
+
+  React.useEffect(() => {
+
+    if (urlAdress=== '/sing-up') {
+      setUrlName('Регистрация');
+
+      return;
+    } 
+    if (urlAdress=== '/sing-in') {
+      setUrlName('Войти');
+
+      return;
+    }
+    if (urlAdress=== '/') {
+      setUrlName('Выйти');
+
+      return;
+    }
+
+  }, [urlAdress, location, history]);
+
+
+
+  const [loggedIn, setLoggedIn] = React.useState(false);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -171,6 +229,8 @@ function App() {
 
         <Header 
         //email={} 
+        urlAdress={urlAdress}
+        urlName={urlName}
         />
           <Switch>
 
