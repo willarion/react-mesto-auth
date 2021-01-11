@@ -77,6 +77,7 @@ function App() {
     changeAddPlacePopupState(false);
     setSelectedCard(emptySelectedCard);
     changeSelectedCardState(false);
+    changeInfoTooltipPopupState(false);
   }
 
 
@@ -220,6 +221,17 @@ function App() {
   }, [urlAdress, location, history]);
 
 
+  //попап регистрации
+  const [isInfoTooltipPopupOpen, changeInfoTooltipPopupState] = React.useState(false);
+  const [infoTooltipMessage, setInfoTooltipMessage] = React.useState('');
+  const [infoTooltipImage, setInfoTooltipImage] = React.useState('');
+
+  function handleRegisterResult({message, image}) {
+    changeInfoTooltipPopupState(true);
+    setInfoTooltipMessage(message);
+    setInfoTooltipImage(image);
+  }
+
 
   const [loggedIn, setLoggedIn] = React.useState(false);
 
@@ -235,7 +247,7 @@ function App() {
           <Switch>
 
             <Route path="/sing-up">
-              <Register />
+              <Register onRegister={handleRegisterResult} />
             </Route>  
 
             <Route path="/sing-in">
@@ -263,6 +275,13 @@ function App() {
           {loggedIn && <PopupWithForm modalName="type_delete-confirm" formName="delete-confirm-form" title="Вы уверены?" buttonValue="Да" onClose={closeAllPopups} /> }
 
           {loggedIn && <ImagePopup card={selectedCard} isOpen={isSelectedCardOpen} onClose={closeAllPopups} />}
+          
+          <InfoTooltip 
+               isOpen={isInfoTooltipPopupOpen} 
+               onClose={closeAllPopups}
+               tooltipImage={infoTooltipImage}
+               tooltipMessage={infoTooltipMessage}
+              />
 
           <Footer />
       </div>
