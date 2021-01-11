@@ -1,5 +1,5 @@
 import React from 'react'; 
-import { Route, Switch } from 'react-router-dom';
+import { Route, Switch, Redirect } from 'react-router-dom';
 import Header from '../components/Header';
 import Main from '../components/Main';
 import Footer from '../components/Footer';
@@ -11,6 +11,7 @@ import ImagePopup from './ImagePopup';
 import Login from './Login';
 import Register from './Register';
 import InfoTooltip from './InfoTooltip';
+import ProtectedRoute from './ProtectedRoute';
 import api from '../utils/Api';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
@@ -162,6 +163,7 @@ function App() {
 
   }
 
+  const loggedIn= false;
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -172,40 +174,37 @@ function App() {
         />
           <Switch>
 
-              <Route exact path="/">
-              <Main 
-                onEditProfile={handleEditProfileClick} 
-                onEditAvatar={handleEditAvatarClick} 
-                onAddPlace={handleAddPlaceClick}
-                cards={cards} 
-                onCardClick={handleCardClick}
-                onCardLike={handleCardLike}
-                onCardDelete={handleCardDelete}
-                />
-
-              <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} /> 
-        
-              <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
-
-              <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} />
-
-              <PopupWithForm modalName="type_delete-confirm" formName="delete-confirm-form" title="Вы уверены?" buttonValue="Да" onClose={closeAllPopups} />  
-
-              <ImagePopup card={selectedCard} isOpen={isSelectedCardOpen} onClose={closeAllPopups} />
-
-              <Footer />
-            </Route>
-
-            <Route exact path="/sign-up">
+            <Route path="/sing-up">
               <Register />
-              <InfoTooltip />
             </Route>  
 
-            <Route exact path="/sign-in">
+            <Route path="/sing-in">
               <Login />
-            </Route>    
+            </Route> 
+
+            <ProtectedRoute path="/" loggedIn={loggedIn} component={Main} 
+              onEditProfile={handleEditProfileClick} 
+              onEditAvatar={handleEditAvatarClick} 
+              onAddPlace={handleAddPlaceClick}
+              cards={cards} 
+              onCardClick={handleCardClick}
+              onCardLike={handleCardLike}
+              onCardDelete={handleCardDelete}
+            />                 
 
           </Switch>
+
+          {loggedIn && <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />} 
+        
+          {loggedIn && <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} /> }
+
+          {loggedIn && <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} /> }
+
+          {loggedIn && <PopupWithForm modalName="type_delete-confirm" formName="delete-confirm-form" title="Вы уверены?" buttonValue="Да" onClose={closeAllPopups} /> }
+
+          {loggedIn && <ImagePopup card={selectedCard} isOpen={isSelectedCardOpen} onClose={closeAllPopups} />}
+
+          <Footer />
       </div>
     </CurrentUserContext.Provider>
   );

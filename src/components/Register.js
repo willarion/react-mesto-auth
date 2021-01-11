@@ -23,7 +23,7 @@ function Register (props) {
         <input type="submit" className="authentification__save-btn" 
         value="Зарегистрироваться"
         />
-        <Link to='/sing-in' className="authentification__hint">
+        <Link to="/sing-in" className="authentification__hint">
           Уже зарегистрированы? Войти
         </Link>
       </form>
