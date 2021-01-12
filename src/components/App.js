@@ -175,6 +175,12 @@ function App() {
   }
 
   //кнопки Header
+  const [userEmail, setUserEmail] = React.useState('');
+
+  function handleUserEmail(email) {
+    setUserEmail(email);
+  }
+
   const [urlAdress, setUrlAdress] = React.useState('');
   const [urlName, setUrlName] = React.useState('');
   const [location, setLocation] = React.useState(window.location.pathname);
@@ -225,7 +231,7 @@ function App() {
       <div className="page">
 
         <Header 
-        //email={} 
+        email={userEmail} 
         urlAdress={urlAdress}
         urlName={urlName}
         />
@@ -236,7 +242,12 @@ function App() {
             </Route>  
 
             <Route path="/sing-in">
-              <Login onLogin={handleLogin} onLoginResult={handleAuthenticationResult} history={history} />
+              <Login 
+                onLogin={handleLogin} 
+                onLoginResult={handleAuthenticationResult}
+                history={history} 
+                onUserEmail={handleUserEmail}
+              />
             </Route> 
 
             <ProtectedRoute path="/" loggedIn={loggedIn} component={Main} 

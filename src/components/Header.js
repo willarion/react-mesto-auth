@@ -10,7 +10,7 @@ function Header (props) {
     <header className="header">
       <div className="header__logo" style={{ backgroundImage: `url(${headerLogo})` }} ></div>
       <div className="header__status">
-        <p className="header__user-email">{props.email}Емейл</p>
+        <p className="header__user-email">{props.email}</p>
         <Link to={props.urlAdress} className="header__link">{props.urlName}</Link>
       </div>
     </header>
