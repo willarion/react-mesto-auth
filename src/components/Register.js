@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link, useHistory } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import * as auth from './Auth';
 import goodTooltipImage from '../images/registered.svg';
 import badTooltipImage from '../images/not-registered.svg';
@@ -11,15 +11,12 @@ function Register (props) {
   const [email, setEmail] = React.useState('');
   const [password, setPassword] = React.useState('');
 
-  const history = useHistory();
-
   function handleEmailChange(e) {
     setEmail(e.target.value);
   }
 
   function handlePasswordChange(e) {
     setPassword(e.target.value);
-    console.log(password);
   }
 
   function handleSubmit(e) {
@@ -39,7 +36,7 @@ function Register (props) {
             image: badTooltipImage});
         }
       })
-      .then(() => history.push('/sign-in'))
+      .then(() => props.history.push('/sign-in'))
       .catch((e) => console.log(e));
   }
 

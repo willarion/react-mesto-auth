@@ -19,7 +19,7 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 
 function App() {
-  const [loggedIn, setLoggedIn] = React.useState(false);
+  const history = useHistory();
 
   //получение данных пользователя
   const [currentUser, setCurrentUser] = React.useState({});
@@ -166,8 +166,15 @@ function App() {
 
   }
 
-  //кнопки Header
 
+  //авторизация
+  const [loggedIn, setLoggedIn] = React.useState(false);
+
+  function handleLogin() {
+    setLoggedIn(true);
+  }
+
+  //кнопки Header
   const [urlAdress, setUrlAdress] = React.useState('');
   const [urlName, setUrlName] = React.useState('');
   const [location, setLocation] = React.useState(window.location.pathname);
@@ -200,12 +207,12 @@ function App() {
   }, [loggedIn, location]);
 
 
-  //попап регистрации
+  //попап результата регистрации
   const [isInfoTooltipPopupOpen, changeInfoTooltipPopupState] = React.useState(false);
   const [infoTooltipMessage, setInfoTooltipMessage] = React.useState('');
   const [infoTooltipImage, setInfoTooltipImage] = React.useState('');
 
-  function handleRegisterResult({message, image}) {
+  function handleAuthenticationResult({message, image}) {
     changeInfoTooltipPopupState(true);
     setInfoTooltipMessage(message);
     setInfoTooltipImage(image);
@@ -225,11 +232,11 @@ function App() {
           <Switch>
 
             <Route path="/sing-up">
-              <Register onRegister={handleRegisterResult} />
+              <Register onRegister={handleAuthenticationResult} history={history} />
             </Route>  
 
             <Route path="/sing-in">
-              <Login />
+              <Login onLogin={handleLogin} onLoginResult={handleAuthenticationResult} history={history} />
             </Route> 
 
             <ProtectedRoute path="/" loggedIn={loggedIn} component={Main} 
