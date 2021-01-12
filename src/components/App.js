@@ -1,5 +1,5 @@
 import React from 'react'; 
-import { Route, Switch, useHistory } from 'react-router-dom';
+import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
 import Header from '../components/Header';
 import Main from '../components/Main';
 import Footer from '../components/Footer';
@@ -19,6 +19,8 @@ import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 
 function App() {
+  const [loggedIn, setLoggedIn] = React.useState(false);
+
   //получение данных пользователя
   const [currentUser, setCurrentUser] = React.useState({});
 
@@ -170,55 +172,32 @@ function App() {
   const [urlName, setUrlName] = React.useState('');
   const [location, setLocation] = React.useState(window.location.pathname);
 
-  const history = useHistory(); 
+  const loc = useLocation();
 
   React.useEffect(() => {
-    history.listen((location) => { 
-      setLocation(location.pathname);
-   }) 
-  }, [history]);
-
-
-  React.useEffect(() => {
-
-    if (location === '/sing-up') {
-      setUrlAdress('/sing-in');
-
-      return;
-    } 
-    if (location === '/sing-in') {
-      setUrlAdress('/sing-up');
-
-      return;
-    }
-    if (location === '/') {
-      setUrlAdress('/sing-in');
-
-      return;
-    }
-  }, [location, urlAdress, history]);
-
+    setLocation(loc.pathname);
+    console.log(loc);
+  }, [loc]);
   
 
   React.useEffect(() => {
-
-    if (urlAdress=== '/sing-up') {
-      setUrlName('Регистрация');
-
-      return;
-    } 
-    if (urlAdress=== '/sing-in') {
-      setUrlName('Войти');
-
-      return;
-    }
-    if (urlAdress=== '/') {
+    if (!loggedIn) {
+      return
+    } else if (location === '/') {
+      setUrlAdress('/sing-in');
       setUrlName('Выйти');
-
-      return;
     }
-
-  }, [urlAdress, location, history]);
+  }, [location, loggedIn]);
+  
+  React.useEffect(() => {
+    if (location === '/sing-up') {
+      setUrlAdress('/sing-in');
+      setUrlName('Войти');
+    } else if (location === '/sing-in') {
+      setUrlAdress('/sing-up');
+      setUrlName('Регистрация');
+    }
+  }, [loggedIn, location]);
 
 
   //попап регистрации
@@ -233,7 +212,6 @@ function App() {
   }
 
 
-  const [loggedIn, setLoggedIn] = React.useState(false);
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -275,7 +253,7 @@ function App() {
           {loggedIn && <PopupWithForm modalName="type_delete-confirm" formName="delete-confirm-form" title="Вы уверены?" buttonValue="Да" onClose={closeAllPopups} /> }
 
           {loggedIn && <ImagePopup card={selectedCard} isOpen={isSelectedCardOpen} onClose={closeAllPopups} />}
-          
+
           <InfoTooltip 
                isOpen={isInfoTooltipPopupOpen} 
                onClose={closeAllPopups}

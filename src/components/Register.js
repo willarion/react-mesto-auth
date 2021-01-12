@@ -48,7 +48,7 @@ function Register (props) {
       <form action="#" className="authentification__containter" onSubmit={handleSubmit} noValidate>
         <fieldset className="authentification__info-input">
           <legend className="authentification__title">
-          Регистрация
+            Регистрация
           </legend>
           <label className="authentification__input-field">
             <input type="email" name="email" placeholder="E-mail" className="authentification__input-line" required minLength="2" maxLength="40" 
