@@ -13,6 +13,7 @@ import Register from './Register';
 import InfoTooltip from './InfoTooltip';
 import ProtectedRoute from './ProtectedRoute';
 import api from '../utils/Api';
+import * as auth from './Auth';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 
@@ -169,18 +170,29 @@ function App() {
 
   //авторизация
   const [loggedIn, setLoggedIn] = React.useState(false);
+  const [userEmail, setUserEmail] = React.useState('');
 
   function handleLogin() {
     setLoggedIn(true);
   }
 
+  React.useEffect(() => { //tokenCheck
+    const jwt = localStorage.getItem('jwt');
+
+    if (jwt) {
+      auth.getContent(jwt)
+        .then((res) => {
+          if (res) {
+            setUserEmail(res.data.email);
+            handleLogin();
+            history.push('/');
+          }
+        })
+    }
+  }, [history])
+
+
   //кнопки Header
-  const [userEmail, setUserEmail] = React.useState('');
-
-  function handleUserEmail(email) {
-    setUserEmail(email);
-  }
-
   const [urlAdress, setUrlAdress] = React.useState('');
   const [urlName, setUrlName] = React.useState('');
   const [location, setLocation] = React.useState(window.location.pathname);
@@ -189,7 +201,6 @@ function App() {
 
   React.useEffect(() => {
     setLocation(loc.pathname);
-    console.log(loc);
   }, [loc]);
   
 
@@ -246,7 +257,6 @@ function App() {
                 onLogin={handleLogin} 
                 onLoginResult={handleAuthenticationResult}
                 history={history} 
-                onUserEmail={handleUserEmail}
               />
             </Route> 
 
