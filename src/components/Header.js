@@ -1,6 +1,6 @@
 import React from 'react';
-import headerLogo from '../images/logo.svg';
 import { Link } from 'react-router-dom';
+import headerLogo from '../images/logo.svg';
 
 
 
@@ -11,13 +11,11 @@ function Header (props) {
       localStorage.removeItem('jwt');
       props.onUserEmail('');
       props.history.push('/sing-in');
-      console.log(localStorage)
     } else {
       return;
     }
   }
 
-  console.log(props.email);
 
   return (
     <header className="header">

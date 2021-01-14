@@ -1,20 +1,20 @@
-import React from 'react'; 
+import React from 'react';
 import { Route, Switch, useHistory, useLocation } from 'react-router-dom';
+import Footer from '../components/Footer';
 import Header from '../components/Header';
 import Main from '../components/Main';
-import Footer from '../components/Footer';
-import PopupWithForm from './PopupWithForm';
-import EditProfilePopup from './EditProfilePopup';
-import EditAvatarPopup from './EditAvatarPopup';
-import AddPlacePopup from './AddPlacePopup';
-import ImagePopup from './ImagePopup';
-import Login from './Login';
-import Register from './Register';
-import InfoTooltip from './InfoTooltip';
-import ProtectedRoute from './ProtectedRoute';
-import api from '../utils/Api';
-import * as auth from './Auth';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import api from '../utils/Api';
+import AddPlacePopup from './AddPlacePopup';
+import * as auth from './Auth';
+import EditAvatarPopup from './EditAvatarPopup';
+import EditProfilePopup from './EditProfilePopup';
+import ImagePopup from './ImagePopup';
+import InfoTooltip from './InfoTooltip';
+import Login from './Login';
+import PopupWithForm from './PopupWithForm';
+import ProtectedRoute from './ProtectedRoute';
+import Register from './Register';
 
 
 

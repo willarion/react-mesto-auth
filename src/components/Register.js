@@ -1,8 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import * as auth from './Auth';
-import goodTooltipImage from '../images/registered.svg';
 import badTooltipImage from '../images/not-registered.svg';
+import goodTooltipImage from '../images/registered.svg';
+import * as auth from './Auth';
 
 
 
