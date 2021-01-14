@@ -36,6 +36,7 @@ function Login (props) {
           return;
         } 
         if (data.token) {
+          props.onUserEmail(email);
           resetForm();
           props.onLogin();
           props.history.push('/');

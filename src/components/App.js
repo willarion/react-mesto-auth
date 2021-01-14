@@ -176,6 +176,10 @@ function App() {
     setLoggedIn(true);
   }
 
+  function handleUserEmail(email) {
+    setUserEmail(email);
+  }
+
   React.useEffect(() => { //tokenCheck
     const jwt = localStorage.getItem('jwt');
 
@@ -183,12 +187,12 @@ function App() {
       auth.getContent(jwt)
         .then((res) => {
           if (res) {
-            setUserEmail(res.data.email);
+            handleUserEmail(res.data.email);
             handleLogin();
             history.push('/');
           }
         })
-    }
+    } 
   }, [history])
 
 
@@ -245,6 +249,8 @@ function App() {
         email={userEmail} 
         urlAdress={urlAdress}
         urlName={urlName}
+        onUserEmail={handleUserEmail}
+        history={history}
         />
           <Switch>
 
@@ -256,6 +262,7 @@ function App() {
               <Login 
                 onLogin={handleLogin} 
                 onLoginResult={handleAuthenticationResult}
+                onUserEmail={handleUserEmail}
                 history={history} 
               />
             </Route> 
