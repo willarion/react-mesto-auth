@@ -4,11 +4,13 @@ import PopupWithForm from './PopupWithForm';
 
 function AddPlacePopup(props) {
 
+  const escape = require('escape-html');
+
   const [name, setName] = React.useState('');
   const [link, setLink] = React.useState('');
 
   function handleNameChange(evt) {
-    setName(evt.target.value);
+    setName(escape(evt.target.value));
   }
   function handleLinkChange(evt) {
     setLink(evt.target.value);

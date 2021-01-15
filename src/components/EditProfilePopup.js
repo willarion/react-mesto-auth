@@ -6,6 +6,7 @@ import PopupWithForm from './PopupWithForm';
 function EditProfilePopup(props) {
 
   const currentUser = React.useContext(CurrentUserContext);
+  const escape = require('escape-html');
 
   const [name, setName] = React.useState('');
   const [description, setDescription] = React.useState('');
@@ -18,10 +19,10 @@ function EditProfilePopup(props) {
 
 
   function handleNameChange(evt) {
-    setName(evt.target.value);
+    setName(escape(evt.target.value));
   }
   function handleDescriptionChange(evt) {
-    setDescription(evt.target.value);
+    setDescription(escape(evt.target.value));
   }
 
   function handleSubmit(evt) {
