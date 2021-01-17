@@ -1,9 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import badTooltipImage from '../images/not-registered.svg';
-import goodTooltipImage from '../images/registered.svg';
-import * as auth from './Auth';
-
 
 
 function Register (props) {
@@ -19,25 +15,15 @@ function Register (props) {
     setPassword(e.target.value);
   }
 
+  function resetForm() {
+    setEmail('');
+    setPassword('');
+  }
+
   function handleSubmit(e) {
     e.preventDefault();
 
-    auth.register(password, email)
-      .then((res) => {
-        if (res) {
-          props.onRegister({
-            message: 'Вы успешно зарегистрировались!',
-            image: goodTooltipImage});
-          return res;
-        } else {
-          console.log(res.status)
-          props.onRegister({
-            message: 'Что-то пошло не так! Попробуйте ещё раз!',
-            image: badTooltipImage});
-        }
-      })
-      .then(() => props.history.push('/sign-in'))
-      .catch((e) => console.log(e));
+    props.onSignUp(password, email, resetForm);
   }
 
   return(

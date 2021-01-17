@@ -13,7 +13,6 @@ export const register = (password, email) => {
   .then((res) => {
     try {
       if (res.status === 201){
-        console.log(res);
         return res.json();
       }
     } catch(e){

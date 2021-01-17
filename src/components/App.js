@@ -4,9 +4,11 @@ import Footer from '../components/Footer';
 import Header from '../components/Header';
 import Main from '../components/Main';
 import { CurrentUserContext } from '../contexts/CurrentUserContext';
-import api from '../utils/Api';
+import badTooltipImage from '../images/not-registered.svg';
+import goodTooltipImage from '../images/registered.svg';
+import api from '../utils/api';
+import * as auth from '../utils/auth';
 import AddPlacePopup from './AddPlacePopup';
-import * as auth from './Auth';
 import EditAvatarPopup from './EditAvatarPopup';
 import EditProfilePopup from './EditProfilePopup';
 import ImagePopup from './ImagePopup';
@@ -15,8 +17,6 @@ import Login from './Login';
 import PopupWithForm from './PopupWithForm';
 import ProtectedRoute from './ProtectedRoute';
 import Register from './Register';
-
-
 
 
 function App() {
@@ -228,6 +228,61 @@ function App() {
   }, [loggedIn, location]);
 
 
+  function signUp(password, email, resetForm) {
+    return auth.register(password, email)
+    .then((res) => {
+      if (res) {
+        handleAuthenticationResult({
+          message: 'Вы успешно зарегистрировались!',
+          image: goodTooltipImage});
+        return res;
+      } else {
+        console.log(res.status)
+        handleAuthenticationResult({
+          message: 'Что-то пошло не так! Попробуйте ещё раз!',
+          image: badTooltipImage});
+      }
+      resetForm();
+    })
+    .then(() => history.push('/sign-in'))
+    .catch((e) => console.log(e));
+  }
+
+
+  function signIn(password, email, resetForm) {
+    return auth.login(password, email)
+    .then((data) => {
+      if (!data) {
+        handleAuthenticationResult({
+          message: 'Что-то пошло не так! Попробуйте ещё раз!',
+          image: badTooltipImage});
+        return;
+      } 
+      if (data.token) {
+        handleUserEmail(email);
+        resetForm();
+        handleLogin();
+        history.push('/');
+        
+        return;
+      }
+    })
+    .catch((e) => console.log(e));
+
+  }
+
+
+  function singOut() {
+    if (urlName === 'Выйти') {
+      localStorage.removeItem('jwt');
+      handleUserEmail('');
+      history.push('/sing-in');
+    } else {
+      return;
+    }
+  }
+
+
   //попап результата регистрации
   const [isInfoTooltipPopupOpen, changeInfoTooltipPopupState] = React.useState(false);
   const [infoTooltipMessage, setInfoTooltipMessage] = React.useState('');
@@ -249,21 +304,18 @@ function App() {
         email={userEmail} 
         urlAdress={urlAdress}
         urlName={urlName}
-        onUserEmail={handleUserEmail}
-        history={history}
+        onSingOut={singOut}
         />
           <Switch>
 
             <Route path="/sing-up">
-              <Register onRegister={handleAuthenticationResult} history={history} />
+              <Register 
+              onSignUp={signUp} />
             </Route>  
 
             <Route path="/sing-in">
               <Login 
-                onLogin={handleLogin} 
-                onLoginResult={handleAuthenticationResult}
-                onUserEmail={handleUserEmail}
-                history={history} 
+                onSignIn={signIn} 
               />
             </Route> 
 
@@ -279,15 +331,21 @@ function App() {
 
           </Switch>
 
-          {loggedIn && <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} />} 
-        
-          {loggedIn && <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} /> }
+          {loggedIn && (
+            <>
+            <EditProfilePopup isOpen={isEditProfilePopupOpen} onClose={closeAllPopups} onUpdateUser={handleUpdateUser} /> 
+          
+            <EditAvatarPopup isOpen={isEditAvatarPopupOpen} onClose={closeAllPopups} onUpdateAvatar={handleUpdateAvatar} />
 
-          {loggedIn && <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} /> }
+            <AddPlacePopup isOpen={isAddPlacePopupOpen} onClose={closeAllPopups} onAddPlace={handleAddPlaceSubmit} />
 
-          {loggedIn && <PopupWithForm modalName="type_delete-confirm" formName="delete-confirm-form" title="Вы уверены?" buttonValue="Да" onClose={closeAllPopups} /> }
-
-          {loggedIn && <ImagePopup card={selectedCard} isOpen={isSelectedCardOpen} onClose={closeAllPopups} />}
+            <PopupWithForm modalName="type_delete-confirm" formName="delete-confirm-form" title="Вы уверены?" buttonValue="Да" onClose={closeAllPopups} /> 
+            
+            <PopupWithForm modalName="type_delete-confirm" formName="delete-confirm-form" title="Вы уверены?" buttonValue="Да" onClose={closeAllPopups} /> 
+            
+            <ImagePopup card={selectedCard} isOpen={isSelectedCardOpen} onClose={closeAllPopups} />
+            </>
+          )}
 
           <InfoTooltip 
                isOpen={isInfoTooltipPopupOpen} 

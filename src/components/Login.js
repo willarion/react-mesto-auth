@@ -1,6 +1,4 @@
 import React from 'react';
-import badTooltipImage from '../images/not-registered.svg';
-import * as auth from './Auth';
 
 
 function Login (props) {
@@ -27,25 +25,7 @@ function Login (props) {
     if (!email || !password) {
       return;
     }
-    auth.login(password, email)
-      .then((data) => {
-        if (!data) {
-          props.onLoginResult({
-            message: 'Что-то пошло не так! Попробуйте ещё раз!',
-            image: badTooltipImage});
-          return;
-        } 
-        if (data.token) {
-          props.onUserEmail(email);
-          resetForm();
-          props.onLogin();
-          props.history.push('/');
-          
-          return;
-        }
-      })
-      .catch((e) => console.log(e));
-
+    props.onSignIn(password, email, resetForm);
   }
 
   return(
@@ -62,7 +42,7 @@ function Login (props) {
           </label>
           <label className="authentification__input-field">
               <input type="password" name="password" placeholder="Пароль" className="authentification__input-line" required minLength="2" maxLength="20" 
-              value={password} onChange={handlePasswordChange}               />
+              value={password} onChange={handlePasswordChange} />
             </label>
         </fieldset>
         <input type="submit" className="authentification__save-btn" value="Войти" 
